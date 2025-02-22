@@ -1,4 +1,26 @@
 /**
+ * Initializes event listeners after the DOM has fully loaded.
+ *
+ * Once the DOM is ready, this code attaches a "keyup" event listener to the input field 
+ * with the ID "index_search_field". The listener checks if the pressed key is "Enter". 
+ * If so, it calls the {@link redirectToOfferListWSearch} function to redirect to the offer list 
+ * page with the current search query.
+ *
+ * @listens Document#DOMContentLoaded
+ * @see redirectToOfferListWSearch
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  const searchField = document.getElementById("index_search_field");
+  if (searchField) {
+    searchField.addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        redirectToOfferListWSearch();
+      }
+    });
+  }
+});
+
+/**
  * Initializes the index page by fetching and rendering the base information.
  * @async
  * @function indexInit
