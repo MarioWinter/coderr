@@ -174,8 +174,8 @@ function getBusinessOrderTemplate(order) {
                                     <p class="link" onclick="redirectToBusinessProfile(${
                                       order.customer_user
                                     })"><strong>Käufer:</strong> ${
-    customer_user.user.first_name
-  } ${customer_user.user.last_name}</p>
+    customer_user.first_name
+  } ${customer_user.last_name}</p>
                                     <p><strong>Titel:</strong> ${
                                       order.title
                                     }</p>
