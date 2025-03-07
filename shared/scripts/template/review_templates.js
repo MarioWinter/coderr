@@ -1,105 +1,107 @@
 function getReviewWLinkTemplateList(reviews) {
-	if (!Array.isArray(reviews)) {
-		return "<p>Fehler beim Laden der Bewertungen!</p>";
-	}
-	if (reviews.length === 0) {
-		return "<p>Noch keine Bewertungen vorhanden.</p>";
-	}
-	let reviewListHTML = "";
+    if (!Array.isArray(reviews) ) {
+        return '<p>Fehler beim Laden der Bewertungen!</p>';
+    }
+    if (reviews.length === 0) {
+        return '<p>Noch keine Bewertungen vorhanden.</p>';
+    }
+    let reviewListHTML = "";
 
-	reviews.forEach((review) => {
-		business_user = getUserInfo(review.business_user);
-		reviewer = getUserInfo(review.reviewer);
-		reviewListHTML += getReviewWLinkTemplate(review, business_user, reviewer);
-	});
+    reviews.forEach(review => {
 
-	return reviewListHTML;
+        business_user = getUserInfo(review.business_user)
+        reviewer = getUserInfo(review.reviewer)
+        reviewListHTML += getReviewWLinkTemplate(review, business_user, reviewer)
+    });
+
+    return reviewListHTML;
 }
 
 function getReviewWLinkTemplate(review, business_user, reviewer) {
-	if (!review || typeof review !== "object" || !reviewer || typeof reviewer !== "object" || !business_user || typeof business_user !== "object") {
-		return `
+    if (!review || typeof review !== 'object' || !reviewer || typeof reviewer !== 'object' || !business_user || typeof business_user !== 'object') {
+        return `
             <div class="card d_flex_cs_gm f_d_c">
                 Es ist ein Fehler aufgetreten
             </div>`;
-	}
-	return `
-        <div class="card d_flex_cs_gm f_d_c">
-            <div class="d_flex_cs_gm f_d_r_resp_c">
-                <img class="profile_img_small c_pointer" onclick="redirectToCustomerProfile(${reviewer.pk})" src="${getPersonImgPath(reviewer.file)}" alt="Benutzeravatar">
-                <div>
-                    <h3 class="link c_black w_full" onclick="redirectToCustomerProfile(${reviewer.pk})">${reviewer.first_name} ${reviewer.last_name}</h3>
-                    <div class="review_stars">
-                        ${getStarsTemplate(review.rating)}
-                    </div>
-                    <p class="link" onclick="redirectToBusinessProfile(${business_user.pk})">über @${business_user.username}</p>
-                </div>
-            </div>
-            <p>${review.description}</p>
-            <span class="font_sec_color">${formatDate(review.created_at)}</span>
-        </div>
-    `;
+    }
+    return `
+                        <div class="card d_flex_cs_gm f_d_c">
+                            <div class="d_flex_cs_gm f_d_r_resp_c">
+                                <img class="profile_img_small c_pointer" onclick="redirectToCustomerProfile(${reviewer.user.pk})" src="${getPersonImgPath(reviewer.user.file)}" alt="Benutzeravatar">
+                                <div>
+                                    <h3 class="link c_black w_full" onclick="redirectToCustomerProfile(${reviewer.user.pk})">${reviewer.user.first_name} ${reviewer.user.last_name}</h3>
+                                    <div class="review_stars">
+                                        ${getStarsTemplate(review.rating)}
+                                    </div>
+                                    <p class="link" onclick="redirectToBusinessProfile(${business_user.user.pk})">über @${business_user.user.username}</p>
+                                </div>
+                            </div>
+                            <p>${review.description}</p>
+                            <span class="font_sec_color">${formatDate(review.created_at)}</span>
+                        </div>
+    `
 }
 
+
 function getReviewWLinkEditableTemplateList(reviews) {
-	if (!Array.isArray(reviews)) {
-		return "<p>Fehler beim Laden der Bewertungen</p>";
-	}
-	if (reviews.length === 0) {
-		return "<p>Es existieren noch keine Bewertungen</p>";
-	}
-	let reviewListHTML = "";
+    if (!Array.isArray(reviews)) {
+        return '<p>Fehler beim Laden der Bewertungen</p>';
+    }
+    if (reviews.length === 0) {
+        return '<p>Es existieren noch keine Bewertungen</p>';
+    }
+    let reviewListHTML = "";
 
-	reviews.forEach((review) => {
-		business_user = getUserInfo(review.business_user);
-		reviewer = getUserInfo(review.reviewer);
+    reviews.forEach(review => {
+        business_user = getUserInfo(review.business_user)
+        reviewer = getUserInfo(review.reviewer)
 
-		reviewListHTML += getReviewEditableTemplate(review, business_user, reviewer);
-	});
+        reviewListHTML += getReviewEditableTemplate(review, business_user, reviewer)
+    });
 
-	return reviewListHTML;
+    return reviewListHTML;
 }
 
 function getReviewEditableTemplate(review, business_user, reviewer) {
-	if (!review || typeof review !== "object" || !reviewer || typeof reviewer !== "object" || !business_user || typeof business_user !== "object") {
-		return `
+    if (!review || typeof review !== 'object' || !reviewer || typeof reviewer !== 'object' || !business_user || typeof business_user !== 'object') {
+        return `
             <div class="card d_flex_cs_gm f_d_c">
                 Es ist ein Fehler aufgetreten
             </div>`;
-	}
-	return `
+    }
+    return `
         <div class="card d_flex_cs_gm f_d_c own_review">
                         <button onclick="openReviewEditDialog(${review.id})"
                             class="d_flex_cc_gl btn_round_m btn_edit abs_pos_edit_btn">
                             <img src="./assets/icons/more_vert.svg" alt="" srcset="">
                         </button>
                         <div class="d_flex_cs_gm f_d_r_resp_c">
-                            <img class="profile_img_small" src="${getPersonImgPath(reviewer.file)}" alt="Benutzeravatar">
+                            <img class="profile_img_small" src="${getPersonImgPath(reviewer.user.file)}" alt="Benutzeravatar">
                             <div>
                                 <div class="d_flex_cc_gm">
-                                    <h3 class="c_black w_full">${reviewer.first_name} ${reviewer.last_name}</h3>
+                                    <h3 class="c_black w_full">${reviewer.user.first_name} ${reviewer.user.last_name}</h3>
                                 </div>
                                 <div class="review_stars">
                                 ${getStarsTemplate(review.rating)}
                                 </div>
-                                <p class="link" onclick="redirectToCustomerProfile(${business_user.pk})">über @${business_user.username}</p>
+                                <p class="link" onclick="redirectToCustomerProfile(${business_user.user.pk})">über @${business_user.user.username}</p>
                             </div>
                         </div>
                         <p>${review.description}</p>
                         <span class="font_sec_color">${formatDate(review.created_at)}</span>
                     </div>
-    `;
+    `
 }
 
-function getReviewDialogformTemplate(review, edit = false) {
-	if (!review || typeof review !== "object") {
-		return `
+function getReviewDialogformTemplate(review, edit=false) {
+    if (!review || typeof review !== 'object' ) {
+        return `
             <div class="card d_flex_cs_gm f_d_c">
                 Es ist ein Fehler aufgetreten
             </div>`;
-	}
+    }
 
-	return `
+    return `
         <form onclick="stopProp(event)" onsubmit="onReviewSubmit(event, ${review.id})" class="m_auto small_form d_flex_cs_gm f_d_c pos_rel">
                     <h2 class="font_prime_color">Bewertung ändern</h2>
                     <button type="button" onclick="closeDialog('rating_dialog')"
@@ -123,11 +125,11 @@ function getReviewDialogformTemplate(review, edit = false) {
                             class="std_btn btn_delete pad_s w_full">Löschen</button>
                     </div>
         </form>
-    `;
+    `
 }
 
-function getDeleteOrNotTemplate(review_id) {
-	return `
+function getDeleteOrNotTemplate(review_id){
+    return `
         <form onclick="stopProp(event)" class="m_auto small_form d_flex_cs_gm f_d_c pos_rel">
                     <div class="d_flex_cc_gxl f_d_c w_full">
             <img class="profile_img" src="./assets/icons/error_circle_red.svg" alt="" srcset="">
@@ -138,35 +140,35 @@ function getDeleteOrNotTemplate(review_id) {
             </div>
         </div>
         </form>
-    `;
+    `
 }
 
 function getStarsEditTemplate(count) {
-	if (!count) {
-		return `<div> Es ist ein Fehler aufgetreten </div>`;
-	}
-	let starsHTML = "";
-	for (let index = 1; index < 6; index++) {
-		if (count >= index) {
-			starsHTML += '<img src="./assets/icons/kid_star.svg" onmouseenter="updateStars(this)" alt="" srcset="">';
-		} else {
-			starsHTML += '<img src="./assets/icons/kid_star_empty.svg" onmouseenter="updateStars(this)" alt="" srcset="">';
-		}
-	}
-	return starsHTML;
+    if (!count ) {
+        return `<div> Es ist ein Fehler aufgetreten </div>`;
+    }
+    let starsHTML = ""
+    for (let index = 1; index < 6; index++) {
+        if (count >= index) {
+            starsHTML += '<img src="./assets/icons/kid_star.svg" onmouseenter="updateStars(this)" alt="" srcset="">'
+        } else {
+            starsHTML += '<img src="./assets/icons/kid_star_empty.svg" onmouseenter="updateStars(this)" alt="" srcset="">'
+        }
+    }
+    return starsHTML;
 }
 
 function getStarsTemplate(count) {
-	if (!count) {
-		return `<div> Es ist ein Fehler aufgetreten </div>`;
-	}
-	let starsHTML = "";
-	for (let index = 1; index < 6; index++) {
-		if (count >= index) {
-			starsHTML += '<img src="./assets/icons/kid_star.svg" alt="" srcset="">';
-		} else {
-			starsHTML += '<img src="./assets/icons/kid_star_empty.svg" alt="" srcset="">';
-		}
-	}
-	return starsHTML;
+    if (!count ) {
+        return `<div> Es ist ein Fehler aufgetreten </div>`;
+    }
+    let starsHTML = ""
+    for (let index = 1; index < 6; index++) {
+        if (count >= index) {
+            starsHTML += '<img src="./assets/icons/kid_star.svg" alt="" srcset="">'
+        } else {
+            starsHTML += '<img src="./assets/icons/kid_star_empty.svg" alt="" srcset="">'
+        }
+    }
+    return starsHTML;
 }
